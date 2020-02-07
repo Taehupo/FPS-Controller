@@ -94,9 +94,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0.3, y: 0.3, z: 0.8}
-  projectile: {fileID: 4861311059109343874, guid: d3ab9d168faaa474591f52217c68c8c4,
+  projectile: {fileID: 2300209603020728023, guid: 5f80810f183ad6545905483e71a56eb3,
     type: 3}
-  fireRate: 0.25
+  fireRate: 0.1
   weapAccracy: 0
   defaultFireOrigin: {fileID: 3758715341898091541}
 --- !u!1 &2178720278928844456

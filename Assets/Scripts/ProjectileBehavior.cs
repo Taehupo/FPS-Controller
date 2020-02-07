@@ -14,6 +14,9 @@ public class ProjectileBehavior : MonoBehaviour
 	int damage;
 
 	[SerializeField]
+	bool isPenetrating;
+
+	[SerializeField]
 	bool isExplosive;
 
 	[SerializeField]
@@ -36,7 +39,7 @@ public class ProjectileBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if ((effectiveVelocity * transform.forward).magnitude < finalVelocity)
+		if ((effectiveVelocity * transform.forward).magnitude <= finalVelocity)
 		{
 			projRb.velocity =  transform.forward * effectiveVelocity;
 		}
@@ -44,6 +47,19 @@ public class ProjectileBehavior : MonoBehaviour
 		if (Vector3.Distance(origin,transform.position) >= maxDistance)
 		{
 			Destroy(this.gameObject);
+		}
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		EnemyBehavior enemy = other.GetComponent<EnemyBehavior>();
+		if (enemy != null)
+		{
+			enemy.RecieveDamage(damage);
+			if (!isPenetrating)
+			{
+				Destroy(this.gameObject);
+			}
 		}
 	}
 }
