@@ -9,6 +9,7 @@ public class EnemyBehavior : MonoBehaviour
 	float healthPointMax;
 
 	[SerializeField]
+	[Range(1,10)]
 	float wanderDistance;
 
 	float currentHealthPoints;
@@ -72,15 +73,20 @@ public class EnemyBehavior : MonoBehaviour
 		wanderingTimer += Time.deltaTime;
 		if (wanderingTimer >= 2.5f)
 		{
-			Vector3 randomDirection = new Vector3(Random.value, Random.value, Random.value);
+			Vector3 randomDirection = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(1.0f, 5.0f), Random.Range(-5.0f, 5.0f));
 
 
-			Vector3 wanderPoint = transform.position + randomDirection * wanderDistance;
+			Vector3 wanderPoint = transform.position + ((randomDirection.normalized) * wanderDistance);
+
+			Debug.Log("WanderPoint = " + wanderPoint);
 
 			NavMeshHit hit;
-			if (NavMesh.SamplePosition(wanderPoint, out hit, 2.0f, -1))
+			if (NavMesh.SamplePosition(wanderPoint, out hit, 20.0f, NavMesh.AllAreas))
 			{
+				Debug.Log("Hit position : " + hit.position);
 				agent.SetDestination(hit.position);
+
+				wanderingTimer = 0.0f;
 			}
 		}
 	}

@@ -145,7 +145,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 500
   finalVelocity: 1600
-  damage: 0
+  damage: 15
+  isPenetrating: 0
   isExplosive: 0
   explosionRange: 0
   effectiveVelocity: 0
