@@ -16,6 +16,15 @@ public class EnemyBehavior : MonoBehaviour
 	[Range(1, 100)]
 	float attackDistance;
 
+	[SerializeField]
+	GameObject ennemyProjectile;
+
+	[SerializeField]
+	[Range(1, 10)]
+	int projectileNumber;
+
+	GameObject projectileOrigin;
+
 	float currentHealthPoints;
 
 	bool isAlive = true;
@@ -37,6 +46,7 @@ public class EnemyBehavior : MonoBehaviour
 	{
 		agent = GetComponent<NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag("Player");
+		projectileOrigin = transform.GetChild(0).gameObject;
 	}
 
 	// Update is called once per frame
@@ -45,8 +55,7 @@ public class EnemyBehavior : MonoBehaviour
 		if (isAlive)
 		{
 			if (isAggroed)
-			{
-				agent.SetDestination(player.transform.position);
+			{				
 				if (Vector3.Distance(transform.position,player.transform.position) <= attackDistance)
 				{
 					Attack();
@@ -54,6 +63,7 @@ public class EnemyBehavior : MonoBehaviour
 				else
 				{
 					agent.isStopped = false;
+					agent.SetDestination(player.transform.position);
 				}
 			}
 			else
@@ -107,6 +117,15 @@ public class EnemyBehavior : MonoBehaviour
 	public void Attack()
 	{
 		agent.isStopped = true;
-		//TO DO : Attack player, and do enemy projectiles.
+		for (int i = 0; i < projectileNumber; ++i)
+		{
+			GameObject go = Instantiate(ennemyProjectile, projectileOrigin.transform.position, Quaternion.identity);
+			Vector3 force = player.transform.position - transform.position;
+			force.y += 2.0f;
+			force.x = force.x * Random.Range(0.5f, 1.0f);
+			force.z = force.z * Random.Range(0.5f, 1.0f);
+			force.y = force.y * Random.Range(0.5f, 1.0f);
+			go.GetComponent<Rigidbody>().AddForce(force);
+		}
 	}
 }

@@ -20,6 +20,9 @@ public class ProjectileBehavior : MonoBehaviour
 	bool isExplosive;
 
 	[SerializeField]
+	bool isGravityAffected;
+
+	[SerializeField]
 	float explosionRange;
 
 	Rigidbody projRb;
@@ -39,10 +42,17 @@ public class ProjectileBehavior : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if ((effectiveVelocity * transform.forward).magnitude <= finalVelocity)
+		if (!isGravityAffected)
 		{
-			projRb.velocity =  transform.forward * effectiveVelocity;
+			if ((effectiveVelocity * transform.forward).magnitude <= finalVelocity)
+			{
+				projRb.velocity = transform.forward * effectiveVelocity;
+			}
 		}
+		else
+		{
+
+		}		
 
 		if (Vector3.Distance(origin,transform.position) >= maxDistance)
 		{
@@ -60,6 +70,12 @@ public class ProjectileBehavior : MonoBehaviour
 			{
 				Destroy(this.gameObject);
 			}
+		}
+
+		PlayerController player = other.GetComponent<PlayerController>();
+		if (player != null)
+		{
+			player.RecieveDamage(damage);
 		}
 	}
 }
