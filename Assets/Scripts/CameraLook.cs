@@ -15,6 +15,8 @@ public class CameraLook : MonoBehaviour
 	[SerializeField]
 	GameObject player;
 
+	PlayerController playerComponent;
+
 	Vector2 mouseLook;
 
 	Vector2 smoothVector;
@@ -23,21 +25,25 @@ public class CameraLook : MonoBehaviour
 	void Start()
 	{
 		player = this.transform.parent.gameObject;
+		playerComponent = player.GetComponent<PlayerController>();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		Vector2Control mouseDeltaC = Pointer.current.delta;
-		Vector2 mouseDelta = new Vector2(mouseDeltaC.x.ReadValue(), mouseDeltaC.y.ReadValue());
-		mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity * smoothness, sensitivity * smoothness));
+		if (playerComponent.isAlive)
+		{
+			Vector2Control mouseDeltaC = Pointer.current.delta;
+			Vector2 mouseDelta = new Vector2(mouseDeltaC.x.ReadValue(), mouseDeltaC.y.ReadValue());
+			mouseDelta = Vector2.Scale(mouseDelta, new Vector2(sensitivity * smoothness, sensitivity * smoothness));
 
-		smoothVector.x = Mathf.Lerp(smoothVector.x, mouseDelta.x, 1.0f / smoothness);
-		smoothVector.y = Mathf.Lerp(smoothVector.y, mouseDelta.y, 1.0f / smoothness);
+			smoothVector.x = Mathf.Lerp(smoothVector.x, mouseDelta.x, 1.0f / smoothness);
+			smoothVector.y = Mathf.Lerp(smoothVector.y, mouseDelta.y, 1.0f / smoothness);
 
-		mouseLook += smoothVector;
+			mouseLook += smoothVector;
 
-		transform.localRotation = Quaternion.AngleAxis(-mouseLook.y, Vector3.right);
-		player.transform.localRotation = Quaternion.AngleAxis(mouseLook.x, player.transform.up);
+			transform.localRotation = Quaternion.AngleAxis(-mouseLook.y, Vector3.right);
+			player.transform.localRotation = Quaternion.AngleAxis(mouseLook.x, player.transform.up);
+		}		
 	}
 }

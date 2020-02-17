@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 
 	static public GameManager instance;
 
+	public bool drawDebug = false;
+
 	// Start is called before the first frame update
 	void Start()
 	{

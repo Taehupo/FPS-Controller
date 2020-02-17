@@ -12,6 +12,10 @@ public class EnemyBehavior : MonoBehaviour
 	[Range(1,10)]
 	float wanderDistance;
 
+	[SerializeField]
+	[Range(1, 100)]
+	float attackDistance;
+
 	float currentHealthPoints;
 
 	bool isAlive = true;
@@ -43,6 +47,14 @@ public class EnemyBehavior : MonoBehaviour
 			if (isAggroed)
 			{
 				agent.SetDestination(player.transform.position);
+				if (Vector3.Distance(transform.position,player.transform.position) <= attackDistance)
+				{
+					Attack();
+				}
+				else
+				{
+					agent.isStopped = false;
+				}
 			}
 			else
 			{
@@ -70,6 +82,7 @@ public class EnemyBehavior : MonoBehaviour
 
 	public void Wander()
 	{
+		agent.isStopped = false;
 		wanderingTimer += Time.deltaTime;
 		if (wanderingTimer >= 2.5f)
 		{
@@ -89,5 +102,11 @@ public class EnemyBehavior : MonoBehaviour
 				wanderingTimer = 0.0f;
 			}
 		}
+	}
+
+	public void Attack()
+	{
+		agent.isStopped = true;
+		//TO DO : Attack player, and do enemy projectiles.
 	}
 }

@@ -20,20 +20,22 @@ public class PlayerController : MonoBehaviour
 	float jumpForce;
 
 	[SerializeField]
-	float firingRate;
-
-	[SerializeField]
 	Weapon currentWeapon;
 
 	[SerializeField]
 	GameObject defaultWeapon;
 
-	float firingRateTimer = 9999999.0f;
+	[SerializeField]
+	float maxHealth;
+
+	float currentHealth;
+
+	[HideInInspector]
+	public bool isAlive = true;
 
 	bool isMoving;
 	bool isStrafing;
 	bool isFiring;
-	bool hasFired = false;
 
 	Vector2 moveForce;
 	Vector2 strafeForce;
@@ -41,40 +43,75 @@ public class PlayerController : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		rb = GetComponent<Rigidbody>();
-		moveForce = new Vector2();
-		strafeForce = new Vector2();
-		GameObject defaultWeap = Instantiate(defaultWeapon, transform.GetChild(0).transform.GetChild(0).position, Quaternion.Euler(90.0f,0.0f,0.0f), transform.GetChild(0).transform.GetChild(0).transform);
-		defaultWeap.transform.localPosition = defaultWeap.GetComponent<Weapon>().offset;
-		currentWeapon = defaultWeap.GetComponent<Weapon>();
+		InitializePlayer();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if (isFiring)
+		if (isAlive)
 		{
-			currentWeapon.Fire();
+			if (isFiring)
+			{
+				currentWeapon.Fire();
+			}
 		}
-
-		Debug.DrawRay(raycastOrigin.position, raycastOrigin.TransformDirection(Vector3.forward) * 1000, Color.white);
+		if (GameManager.instance.drawDebug)
+		{
+			DrawDebugs();
+		}
 	}
 
 	void FixedUpdate()
 	{
-		if ((isMoving || isStrafing) && rb.velocity.sqrMagnitude < 10.0f)
+		UpdateMovement();
+	}
+
+	void InitializePlayer()
+	{
+		rb = GetComponent<Rigidbody>();
+		moveForce = new Vector2();
+		strafeForce = new Vector2();
+		GameObject defaultWeap = Instantiate(defaultWeapon, transform.GetChild(0).transform.GetChild(0).position, Quaternion.Euler(90.0f, 0.0f, 0.0f), transform.GetChild(0).transform.GetChild(0).transform);
+		defaultWeap.transform.localPosition = defaultWeap.GetComponent<Weapon>().offset;
+		currentWeapon = defaultWeap.GetComponent<Weapon>();
+		currentHealth = maxHealth;
+	}
+
+	void DrawDebugs()
+	{
+		Debug.DrawRay(raycastOrigin.position, raycastOrigin.TransformDirection(Vector3.forward) * 1000, Color.white);
+	}
+
+	void UpdateMovement()
+	{
+		if (isAlive)
 		{
-			rb.AddForce(transform.forward * -moveForce.y * speed);
-			rb.AddForce(transform.right * strafeForce.x * strafeSpeed);
-		}
-		if (!isMoving || isStrafing)
+			if ((isMoving || isStrafing) && rb.velocity.sqrMagnitude < 10.0f)
+			{
+				rb.AddForce(transform.forward * -moveForce.y * speed);
+				rb.AddForce(transform.right * strafeForce.x * strafeSpeed);
+			}
+			if (!isMoving || !isStrafing)
+			{
+				Vector3 tempVelo = rb.velocity;
+				tempVelo.x = 0;
+				tempVelo.z = 0;
+				rb.velocity = tempVelo;
+			}
+		}		
+	}
+
+	public void RecieveDamage(float damageAmount)
+	{
+		currentHealth -= damageAmount;
+		if (currentHealth <= 0)
 		{
-			Vector3 tempVelo = rb.velocity;
-			tempVelo.x = 0;
-			tempVelo.z = 0;
-			rb.velocity = tempVelo;
+			isAlive = false;
 		}
 	}
+
+	//Input management starts here
 
 	public void Move(InputAction.CallbackContext context)
 	{
