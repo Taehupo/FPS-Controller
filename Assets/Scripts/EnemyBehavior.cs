@@ -23,6 +23,8 @@ public class EnemyBehavior : MonoBehaviour
 	[Range(1, 10)]
 	int projectileNumber;
 
+	Animator enemyAnimator;
+
 	GameObject projectileOrigin;
 
 	float currentHealthPoints;
@@ -36,14 +38,11 @@ public class EnemyBehavior : MonoBehaviour
 
 	GameObject player;
 
-	void Awake()
-	{
-		currentHealthPoints = healthPointMax;
-	}
-
 	// Start is called before the first frame update
 	void Start()
 	{
+		currentHealthPoints = healthPointMax;
+		enemyAnimator = GetComponent<Animator>();
 		agent = GetComponent<NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag("Player");
 		projectileOrigin = transform.GetChild(0).gameObject;
@@ -58,11 +57,12 @@ public class EnemyBehavior : MonoBehaviour
 			{				
 				if (Vector3.Distance(transform.position,player.transform.position) <= attackDistance)
 				{
-					Attack();
+					StartAttack();
 				}
 				else
 				{
 					agent.isStopped = false;
+					StopAttack();
 					agent.SetDestination(player.transform.position);
 				}
 			}
@@ -112,6 +112,16 @@ public class EnemyBehavior : MonoBehaviour
 				wanderingTimer = 0.0f;
 			}
 		}
+	}
+
+	void StartAttack()
+	{
+		enemyAnimator.SetBool("canAttack", true);
+	}
+
+	void StopAttack()
+	{
+		enemyAnimator.SetBool("canAttack", false);
 	}
 
 	public void Attack()

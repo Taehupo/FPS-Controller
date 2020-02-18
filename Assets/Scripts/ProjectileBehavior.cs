@@ -66,16 +66,17 @@ public class ProjectileBehavior : MonoBehaviour
 		if (enemy != null)
 		{
 			enemy.RecieveDamage(damage);
-			if (!isPenetrating)
-			{
-				Destroy(this.gameObject);
-			}
 		}
 
 		PlayerController player = other.GetComponent<PlayerController>();
 		if (player != null)
 		{
 			player.RecieveDamage(damage);
+		}
+
+		if (!isPenetrating)
+		{
+			Destroy(this.gameObject);
 		}
 	}
 }

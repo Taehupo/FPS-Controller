@@ -314,10 +314,11 @@ MonoBehaviour:
   speed: 100
   strafeSpeed: 100
   jumpForce: 500
-  firingRate: 0.25
   currentWeapon: {fileID: 0}
   defaultWeapon: {fileID: 1230357920932653634, guid: 979f43457bb4d3845a76d69b305e7f6a,
     type: 3}
+  maxHealth: 500
+  isAlive: 1
 --- !u!1 &8475232303886747530
 GameObject:
   m_ObjectHideFlags: 0

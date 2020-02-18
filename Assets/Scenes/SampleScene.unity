@@ -581,6 +581,7 @@ GameObject:
   - component: {fileID: 1811424102}
   - component: {fileID: 1811424101}
   - component: {fileID: 1811424106}
+  - component: {fileID: 1811424107}
   m_Layer: 0
   m_Name: Ant
   m_TagString: Untagged
@@ -704,6 +705,25 @@ MonoBehaviour:
   ennemyProjectile: {fileID: 7243043974164734252, guid: f0fd9a05b5608764abf523f6364a09bb,
     type: 3}
   projectileNumber: 5
+--- !u!95 &1811424107
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811424100}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 267bfbe23d155ce44ba45981d93c9b3e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1911641044
 GameObject:
   m_ObjectHideFlags: 0
