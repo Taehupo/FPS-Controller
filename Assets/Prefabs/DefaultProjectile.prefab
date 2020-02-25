@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4861311059109343873}
   - component: {fileID: 4861311059109343876}
   - component: {fileID: 4861311059109343931}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DefaultProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,9 @@ MonoBehaviour:
   maxDistance: 20
   finalVelocity: 250
   damage: 5
+  isPenetrating: 0
   isExplosive: 0
+  isGravityAffected: 0
   explosionRange: 0
   effectiveVelocity: 0
 --- !u!95 &4861311059109343931
