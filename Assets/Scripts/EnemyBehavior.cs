@@ -98,17 +98,12 @@ public class EnemyBehavior : MonoBehaviour
 		{
 			Vector3 randomDirection = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(1.0f, 5.0f), Random.Range(-5.0f, 5.0f));
 
-
 			Vector3 wanderPoint = transform.position + ((randomDirection.normalized) * wanderDistance);
-
-			Debug.Log("WanderPoint = " + wanderPoint);
 
 			NavMeshHit hit;
 			if (NavMesh.SamplePosition(wanderPoint, out hit, 20.0f, NavMesh.AllAreas))
 			{
-				Debug.Log("Hit position : " + hit.position);
 				agent.SetDestination(hit.position);
-
 				wanderingTimer = 0.0f;
 			}
 		}

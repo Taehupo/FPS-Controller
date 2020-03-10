@@ -322,11 +322,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnRange: 5
-  enemyNumber: 5
+  enemyNumber: 10
   enemyList:
   - {fileID: 2932937572578151734, guid: b5898ed89dd2b5b458b7dc3a6212a58f, type: 3}
-  enemySpawnRate: 0
+  enemySpawnRate: 10
+  enemyIntermittantSpawnGap: 0.1
   isTimedSpawner: 0
+  isSpawnIntermittent: 1
+  isIntermittentSpawnRandomized: 0
 --- !u!4 &890631184
 Transform:
   m_ObjectHideFlags: 0
