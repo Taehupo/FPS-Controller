@@ -149,5 +149,6 @@ MonoBehaviour:
   isPenetrating: 0
   isExplosive: 0
   isGravityAffected: 1
+  isSelfDamaging: 0
   explosionRange: 0
   effectiveVelocity: 0

@@ -46,10 +46,18 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Crouch",
+                    "name": "SpecialClassAction",
                     "type": "Button",
                     "id": "c1737c7b-7c99-494a-9144-69f2b9509277",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Reload",
+                    "type": "Button",
+                    "id": "510014ce-52a6-457d-ad41-f821997eaca1",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
                 }
@@ -256,11 +264,22 @@
                 {
                     "name": "",
                     "id": "b33f0b13-b453-48f6-b6ab-bac03d5753a1",
-                    "path": "<Keyboard>/leftCtrl",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Crouch",
+                    "action": "SpecialClassAction",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f28b8540-1524-43db-b696-2b5a11410ba3",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Reload",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

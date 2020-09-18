@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,7 +16,13 @@ public class PlayerController : MonoBehaviour
 	float speed;
 
 	[SerializeField]
+	float sprintSpeed;
+
+	[SerializeField]
 	float strafeSpeed;
+
+	[SerializeField]
+	float speedLimit;
 
 	[SerializeField]
 	float jumpForce;
@@ -36,6 +44,10 @@ public class PlayerController : MonoBehaviour
 	bool isMoving;
 	bool isStrafing;
 	bool isFiring;
+	bool isSprinting = false;
+
+	[SerializeField]
+	TextMeshPro AmmoText;
 
 	Vector2 moveForce;
 	Vector2 strafeForce;
@@ -50,16 +62,24 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		if (isAlive)
-		{
-			if (isFiring)
+		{			
+			if (isFiring && !currentWeapon.isReloading)
 			{
-				currentWeapon.Fire();
+				if (rb != null)
+				{
+					currentWeapon.Fire(rb);
+				}
+				else
+				{
+					currentWeapon.Fire(null);
+				}
 			}
 		}
 		if (GameManager.instance.drawDebug)
 		{
 			DrawDebugs();
 		}
+		UpdatePlayerUI();
 	}
 
 	void FixedUpdate()
@@ -76,6 +96,7 @@ public class PlayerController : MonoBehaviour
 		defaultWeap.transform.localPosition = defaultWeap.GetComponent<Weapon>().offset;
 		currentWeapon = defaultWeap.GetComponent<Weapon>();
 		currentHealth = maxHealth;
+		AmmoText = currentWeapon.GetComponentInChildren<TextMeshPro>();
 	}
 
 	void DrawDebugs()
@@ -87,18 +108,39 @@ public class PlayerController : MonoBehaviour
 	{
 		if (isAlive)
 		{
-			if ((isMoving || isStrafing) && rb.velocity.sqrMagnitude < 10.0f)
+			if ((isMoving || isStrafing) && rb.velocity.sqrMagnitude <= speedLimit)
 			{
-				rb.AddForce(transform.forward * -moveForce.y * speed);
-				rb.AddForce(transform.right * strafeForce.x * strafeSpeed);
+				Vector3 movingForce;
+				if (isSprinting)
+				{
+					movingForce = Vector3.Normalize((transform.forward * -moveForce.y) + (transform.right * strafeForce.x)) * sprintSpeed;
+				}
+				else
+				{
+					movingForce = Vector3.Normalize((transform.forward * -moveForce.y) + (transform.right * strafeForce.x)) * speed;
+				}
+				
+				rb.AddForce(movingForce);
 			}
-			if (!isMoving || !isStrafing)
+			if (!isMoving && !isStrafing)
 			{
 				Vector3 tempVelo = rb.velocity;
 				tempVelo.x = 0;
 				tempVelo.z = 0;
 				rb.velocity = tempVelo;
 			}
+		}		
+	}
+
+	void UpdatePlayerUI()
+	{
+		if (!currentWeapon.isReloading)
+		{
+			AmmoText.text = currentWeapon.currentAmmo + "/" + currentWeapon.GetMaxAmmo();
+		}
+		else
+		{
+			AmmoText.text = "Reloading : " + (currentWeapon.reloadTime - currentWeapon.reloadTimer).ToString("N1") + " s";
 		}		
 	}
 
@@ -159,11 +201,23 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	public void Crouch(InputAction.CallbackContext context)
+	public void SpecialClassAction(InputAction.CallbackContext context)
 	{
 		if (context.phase == InputActionPhase.Started)
 		{
+			isSprinting = true;
+		}
+		if (context.phase == InputActionPhase.Canceled)
+		{
+			isSprinting = false;
+		}
+	}
 
+	public void Reload(InputAction.CallbackContext context)
+	{
+		if (context.phase == InputActionPhase.Started)
+		{
+			currentWeapon.StartReload();
 		}
 	}
 }

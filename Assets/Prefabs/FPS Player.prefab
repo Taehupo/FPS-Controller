@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681178804}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8475232303886747535}
@@ -281,7 +281,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8475232302054866055}
-        m_MethodName: Crouch
+        m_MethodName: SpecialClassAction
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -312,10 +312,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastOrigin: {fileID: 8475232303886747535}
   speed: 100
+  sprintSpeed: 300
   strafeSpeed: 100
+  speedLimit: 50
   jumpForce: 500
   currentWeapon: {fileID: 0}
-  defaultWeapon: {fileID: 1230357920932653634, guid: 979f43457bb4d3845a76d69b305e7f6a,
+  defaultWeapon: {fileID: 7623154288174371533, guid: 6812294473d4646428703552f92babc1,
     type: 3}
   maxHealth: 500
   isAlive: 1

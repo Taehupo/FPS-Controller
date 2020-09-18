@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProjectileBehavior : MonoBehaviour
 {
 	[SerializeField]
-	float maxDistance;
+	float maxRange;
 
 	[SerializeField]
 	float finalVelocity;
@@ -23,12 +23,17 @@ public class ProjectileBehavior : MonoBehaviour
 	bool isGravityAffected;
 
 	[SerializeField]
+	bool isSelfDamaging = false;
+
+	[SerializeField]
 	float explosionRange;
 
 	Rigidbody projRb;
 
 	[HideInInspector]
 	public float effectiveVelocity;
+
+	GameObject shooter;
 
 	Vector3 origin;
 
@@ -44,17 +49,13 @@ public class ProjectileBehavior : MonoBehaviour
 	{
 		if (!isGravityAffected)
 		{
-			if ((effectiveVelocity * transform.forward).magnitude <= finalVelocity)
+			if ((projRb.velocity).magnitude <= finalVelocity)
 			{
-				projRb.velocity = transform.forward * effectiveVelocity;
+				projRb.AddForce(transform.forward * effectiveVelocity);
 			}
-		}
-		else
-		{
-
 		}		
 
-		if (Vector3.Distance(origin,transform.position) >= maxDistance)
+		if (Vector3.Distance(origin,transform.position) >= maxRange)
 		{
 			Destroy(this.gameObject);
 		}
@@ -62,21 +63,54 @@ public class ProjectileBehavior : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		EnemyBehavior enemy = other.GetComponent<EnemyBehavior>();
-		if (enemy != null)
+		if (other.gameObject != shooter && !isSelfDamaging)
 		{
-			enemy.RecieveDamage(damage);
-		}
+			EnemyBehavior enemy = other.GetComponent<EnemyBehavior>();
+			if (enemy != null)
+			{
+				enemy.RecieveDamage(damage);
+				if (!isPenetrating)
+				{
+					Destroy(this.gameObject);
+				}
+			}
 
-		PlayerController player = other.GetComponent<PlayerController>();
-		if (player != null)
-		{
-			player.RecieveDamage(damage);
+			PlayerController player = other.GetComponent<PlayerController>();
+			if (player != null)
+			{
+				player.RecieveDamage(damage);
+				if (!isPenetrating)
+				{
+					Destroy(this.gameObject);
+				}
+			}
 		}
+		else if (isSelfDamaging)
+		{
+			EnemyBehavior enemy = other.GetComponent<EnemyBehavior>();
+			if (enemy != null)
+			{
+				enemy.RecieveDamage(damage);
+				if (!isPenetrating)
+				{
+					Destroy(this.gameObject);
+				}
+			}
 
-		if (!isPenetrating)
-		{
-			Destroy(this.gameObject);
-		}
+			PlayerController player = other.GetComponent<PlayerController>();
+			if (player != null)
+			{
+				player.RecieveDamage(damage);
+				if (!isPenetrating)
+				{
+					Destroy(this.gameObject);
+				}
+			}
+		}				
+	}
+
+	public void SetShooter(GameObject _shooter)
+	{
+		shooter = _shooter;
 	}
 }
