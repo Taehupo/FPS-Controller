@@ -6,9 +6,6 @@ using UnityEngine.AI;
 public class EnemyBehavior : MonoBehaviour
 {
 	[SerializeField]
-	SphereCollider aggroSphere;
-
-	[SerializeField]
 	float healthPointMax;
 
 	[SerializeField]
@@ -49,7 +46,6 @@ public class EnemyBehavior : MonoBehaviour
 		agent = GetComponent<NavMeshAgent>();
 		player = GameObject.FindGameObjectWithTag("Player");
 		projectileOrigin = transform.GetChild(0).gameObject;
-		aggroSphere.enabled = false;
 	}
 
 	// Update is called once per frame
@@ -91,7 +87,6 @@ public class EnemyBehavior : MonoBehaviour
 		if (!isAggroed)
 		{
 			isAggroed = true;
-			aggroSphere.enabled = true;
 		}
 	}
 
@@ -103,17 +98,12 @@ public class EnemyBehavior : MonoBehaviour
 		{
 			Vector3 randomDirection = new Vector3(Random.Range(-5.0f, 5.0f), Random.Range(1.0f, 5.0f), Random.Range(-5.0f, 5.0f));
 
-
 			Vector3 wanderPoint = transform.position + ((randomDirection.normalized) * wanderDistance);
-
-			//Debug.Log("WanderPoint = " + wanderPoint);
 
 			NavMeshHit hit;
 			if (NavMesh.SamplePosition(wanderPoint, out hit, 20.0f, NavMesh.AllAreas))
 			{
-				//Debug.Log("Hit position : " + hit.position);
 				agent.SetDestination(hit.position);
-
 				wanderingTimer = 0.0f;
 			}
 		}
@@ -141,18 +131,6 @@ public class EnemyBehavior : MonoBehaviour
 			force.z = force.z * Random.Range(0.5f, 1.0f);
 			force.y = force.y * Random.Range(0.5f, 1.0f);
 			go.GetComponent<Rigidbody>().AddForce(force);
-			go.GetComponent<ProjectileBehavior>().SetShooter(gameObject);
 		}
-	}
-
-	private void OnTriggerStay(Collider other)
-	{
-		EnemyBehavior otherEnemy = GetComponent<EnemyBehavior>();
-		if (otherEnemy != null)
-		{
-			aggroSphere.enabled = false;
-			otherEnemy.isAggroed = true;
-		}
-		
 	}
 }
