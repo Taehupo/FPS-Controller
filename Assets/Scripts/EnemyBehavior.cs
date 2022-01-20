@@ -126,6 +126,11 @@ public class EnemyBehavior : MonoBehaviour
 		{
 			GameObject go = Instantiate(ennemyProjectile, projectileOrigin.transform.position, Quaternion.identity);
 			Vector3 force = player.transform.position - transform.position;
+			ProjectileBehavior newProj = go.GetComponent<ProjectileBehavior>();
+			if (newProj != null)
+			{
+				newProj.SetShooter(this.gameObject);
+			}
 			force.y += 2.0f;
 			force.x = force.x * Random.Range(0.5f, 1.0f);
 			force.z = force.z * Random.Range(0.5f, 1.0f);

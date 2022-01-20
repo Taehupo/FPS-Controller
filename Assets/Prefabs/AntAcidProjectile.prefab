@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7243043974164734248}
   - component: {fileID: 7243043974164734251}
   - component: {fileID: 7243043974164734250}
-  - component: {fileID: 492136893199341727}
   - component: {fileID: 7243043974164734253}
   m_Layer: 0
   m_Name: AntAcidProjectile
@@ -59,6 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,6 +83,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &7243043974164734251
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -112,25 +113,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!95 &492136893199341727
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7243043974164734252}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &7243043974164734253
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193ac06ea85059e46aaa18d6526e5072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 500
+  maxRange: 50
   finalVelocity: 50
   damage: 15
   isPenetrating: 0
@@ -151,4 +133,9 @@ MonoBehaviour:
   isGravityAffected: 1
   isSelfDamaging: 0
   explosionRange: 0
-  effectiveVelocity: 0
+  effectiveVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

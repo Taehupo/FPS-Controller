@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour
 
 	float currentHealth;
 
+	[SerializeField]
+	Slider healthBar;
+
 	[HideInInspector]
 	public bool isAlive = true;
 
@@ -45,9 +48,6 @@ public class PlayerController : MonoBehaviour
 	bool isStrafing;
 	bool isFiring;
 	bool isSprinting = false;
-
-	[SerializeField]
-	TextMeshPro AmmoText;
 
 	Vector2 moveForce;
 	Vector2 strafeForce;
@@ -74,17 +74,22 @@ public class PlayerController : MonoBehaviour
 					currentWeapon.Fire(null);
 				}
 			}
+			UpdatePlayerUI();
 		}
 		if (GameManager.instance.drawDebug)
 		{
 			DrawDebugs();
 		}
-		UpdatePlayerUI();
 	}
 
 	void FixedUpdate()
 	{
 		UpdateMovement();
+	}
+
+	void UpdatePlayerUI()
+	{
+		healthBar.value = currentHealth / maxHealth;
 	}
 
 	void InitializePlayer()
@@ -96,7 +101,6 @@ public class PlayerController : MonoBehaviour
 		defaultWeap.transform.localPosition = defaultWeap.GetComponent<Weapon>().offset;
 		currentWeapon = defaultWeap.GetComponent<Weapon>();
 		currentHealth = maxHealth;
-		AmmoText = currentWeapon.GetComponentInChildren<TextMeshPro>();
 	}
 
 	void DrawDebugs()
@@ -119,7 +123,6 @@ public class PlayerController : MonoBehaviour
 				{
 					movingForce = Vector3.Normalize((transform.forward * -moveForce.y) + (transform.right * strafeForce.x)) * speed;
 				}
-				
 				rb.AddForce(movingForce);
 			}
 			if (!isMoving && !isStrafing)
@@ -129,18 +132,6 @@ public class PlayerController : MonoBehaviour
 				tempVelo.z = 0;
 				rb.velocity = tempVelo;
 			}
-		}		
-	}
-
-	void UpdatePlayerUI()
-	{
-		if (!currentWeapon.isReloading)
-		{
-			AmmoText.text = currentWeapon.currentAmmo + "/" + currentWeapon.GetMaxAmmo();
-		}
-		else
-		{
-			AmmoText.text = "Reloading : " + (currentWeapon.reloadTime - currentWeapon.reloadTimer).ToString("N1") + " s";
 		}		
 	}
 

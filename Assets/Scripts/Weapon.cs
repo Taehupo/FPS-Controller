@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 
 public enum Accuracy
 {
@@ -53,15 +55,25 @@ public class Weapon : MonoBehaviour
 	[SerializeField]
 	Animator weaponAnimator;
 
+	[SerializeField]
+	TextMeshPro AmmoText;
+
+	[SerializeField]
+	Slider ReloadSlider;
+
 	// Start is called before the first frame update
 	void Start()
 	{
 		currentAmmo = maxAmmo;
+		AmmoText = GetComponentInChildren<TextMeshPro>();
+		ReloadSlider = GetComponentInChildren<Slider>();
+		ReloadSlider.gameObject.SetActive(false);
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		UpdateWeaponRelatedUI();
 		if (hasFired)
 		{
 			firingRateTimer += Time.deltaTime;
@@ -83,6 +95,23 @@ public class Weapon : MonoBehaviour
 		}
 	}
 
+	void UpdateWeaponRelatedUI()
+	{
+		if (!isReloading)
+		{
+			AmmoText.text = currentAmmo + "/" + GetMaxAmmo();
+		}
+		else
+		{
+			if (ReloadSlider.gameObject.activeSelf == false)
+			{
+				ReloadSlider.gameObject.SetActive(true);
+			}
+			AmmoText.text = "";
+			ReloadSlider.value = reloadTimer / reloadTime;
+		}
+	}
+
 	public void Fire(Rigidbody firingEntity)
 	{
 		if (firingRateTimer >= fireRate && currentAmmo > 0)
@@ -91,10 +120,18 @@ public class Weapon : MonoBehaviour
 			GameObject proj = Instantiate(projectile, defaultFireOrigin.position, Quaternion.identity);
 			Vector3 localForward = transform.InverseTransformDirection(defaultFireOrigin.forward);
 			proj.transform.forward = transform.TransformDirection(ComputeInnacuracy(localForward));
+
+			ProjectileBehavior newProj = proj.GetComponent<ProjectileBehavior>();
+			if (newProj != null)
+			{
+				newProj.SetShooter(this.gameObject);
+			}
+
 			if (firingEntity != null)
 			{
 				proj.GetComponent<Rigidbody>().velocity = firingEntity.velocity;
 			}
+
 			firingRateTimer = 0.0f;
 			hasFired = true;
 			currentAmmo--;
@@ -115,7 +152,7 @@ public class Weapon : MonoBehaviour
 		isReloading = true;
 		StopFiring();
 		weaponAnimator.SetBool("Reloading", true);
-		//To Do : Have reload weaponAnimatorations.
+		ReloadSlider.gameObject.SetActive(true);
 	}
 
 	void FinishReload()
@@ -123,7 +160,8 @@ public class Weapon : MonoBehaviour
 		weaponAnimator.SetBool("Reloading", false);
 		currentAmmo = maxAmmo;
 		reloadTimer = 0.0f;
-		isReloading = false;		
+		isReloading = false;
+		ReloadSlider.gameObject.SetActive(false);
 	}
 
 	public int GetMaxAmmo()

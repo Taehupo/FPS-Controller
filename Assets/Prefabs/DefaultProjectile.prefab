@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4861311059109343872}
   - component: {fileID: 4861311059109343873}
   - component: {fileID: 4861311059109343876}
-  - component: {fileID: 4861311059109343931}
   m_Layer: 8
   m_Name: DefaultProjectile
   m_TagString: Untagged
@@ -59,6 +58,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -83,6 +83,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &4861311059109343872
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -124,30 +125,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193ac06ea85059e46aaa18d6526e5072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDistance: 20
+  maxRange: 0
   finalVelocity: 250
   damage: 5
   isPenetrating: 0
   isExplosive: 0
   isGravityAffected: 0
+  isSelfDamaging: 0
   explosionRange: 0
-  effectiveVelocity: 0
---- !u!95 &4861311059109343931
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4861311059109343874}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0d5f93c4bb84fc04fa8da56777e8f0f4, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  effectiveVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

@@ -77,8 +77,8 @@ public class Spawner : MonoBehaviour
             {
                 IntermittentSpawn();
             }
+            intermittentSpawnTimer += Time.deltaTime;
         }
-        intermittentSpawnTimer += Time.deltaTime;
     }
 
     void StartIntermittentSpawning()

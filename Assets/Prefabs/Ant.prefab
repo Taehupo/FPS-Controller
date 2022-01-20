@@ -92,6 +92,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -116,6 +117,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!136 &2932937572578151732
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -164,7 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac1f5d0adf9d384fb93cc6c25583e4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aggroSphere: {fileID: 6154853756012433112}
   healthPointMax: 100
   wanderDistance: 10
   attackDistance: 10
